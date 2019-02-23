@@ -35,14 +35,14 @@ class ShuttleRoute {
 /**/
 
 function parseDate(str) {
-  const matches = /Date\((\d+)([-\+])?(\d+)?\)/.exec(str)
+  const matches = /Date\((\d+)([-\+]\d{4})?\)/.exec(str)
   if (matches) {
-    let ts = parseInt(matches[1], 10)
-    if (matches[2] && matches[3]) {
-      const hours = parseInt(matches[3].substring(0, 2), 10)
-      const minutes = parseInt(matches[3].substring(2, 4), 10)
+    let ts = parseInt(matches[1])
+    if (matches[2]) {
+      const hours = parseInt(matches[2].substring(1, 3))
+      const minutes = parseInt(matches[2].substring(3, 5))
       const offset = (hours * 3600 + minutes * 60) * 1000
-      ts = matches[2] == '+' ? ts + offset : ts - offset
+      ts = matches[2][0] == '+' ? ts + offset : ts - offset
     }
     return new Date(ts)
   }
