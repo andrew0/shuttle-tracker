@@ -40,9 +40,9 @@ function parseDate(str) {
     let ts = parseInt(matches[1], 10)
     if (matches[2] && matches[3]) {
       const hours = parseInt(matches[3].substring(0, 2), 10)
-    	const minutes = parseInt(matches[3].substring(2, 4), 10)
-    	const offset = (hours * 3600 + minutes * 60) * 1000
-    	ts = matches[2] == '+' ? ts + offset : ts - offset
+      const minutes = parseInt(matches[3].substring(2, 4), 10)
+      const offset = (hours * 3600 + minutes * 60) * 1000
+      ts = matches[2] == '+' ? ts + offset : ts - offset
     }
     return new Date(ts)
   }
@@ -90,17 +90,15 @@ class ShuttleTracker {
     this.mapVehiclePointsData = []
   }
   
-  async getApiData(method) {
+  getApiData(method) {
     return new Promise((resolve, reject) => {
       http
-        .get(`${this.baseURL}/${method}?ApiKey=${this.apiKey}`, (resp) => {
+        .get(`${this.baseURL}/${method}?ApiKey=${this.apiKey}`, resp => {
           let data = ''
           resp.on('data', chunk => data += chunk)
           resp.on('end', () => resolve(JSON.parse(data)))
         })
-        .on('error', err => {
-          reject(err)
-      })
+        .on('error', reject)
     })
   }
   
